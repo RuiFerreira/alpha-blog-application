@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %I[show edit update]
+  before_action :set_user, only: %I[show edit update destroy]
   before_action :require_user, only: %I[edit update]
   before_action :require_same_user, only: %I[edit update]
 
@@ -35,6 +35,13 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    @user.destroy
+    session[:user_id] = nil
+    flash[:notice] = 'You have successfully deleted your account and all its contents'
+    redirect_to root_path
   end
 
   private
